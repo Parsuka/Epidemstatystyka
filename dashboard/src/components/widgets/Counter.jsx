@@ -1,12 +1,9 @@
-import { useState } from 'react';
 import Button from '../ui/Button';
 
-function Counter({ label, initialValue = 7, min = 1, max = 30, step = 1, unit = '' }) {
-  const [value, setValue] = useState(initialValue);
-
-  const decrement = () => setValue((prev) => Math.max(min, prev - step));
-  const increment = () => setValue((prev) => Math.min(max, prev + step));
-  const reset = () => setValue(initialValue);
+function Counter({ label, value, onChange, defaultValue, min = 1, max = 30, step = 1, unit = '' }) {
+  const decrement = () => onChange(Math.max(min, value - step));
+  const increment = () => onChange(Math.min(max, value + step));
+  const reset = () => onChange(defaultValue);
 
   return (
     <div className="counter">
@@ -22,7 +19,7 @@ function Counter({ label, initialValue = 7, min = 1, max = 30, step = 1, unit = 
           +
         </Button>
       </div>
-      <Button variant="ghost" onClick={reset} disabled={value === initialValue}>
+      <Button variant="ghost" onClick={reset} disabled={value === defaultValue}>
         Скинути
       </Button>
       <p className="counter__hint">

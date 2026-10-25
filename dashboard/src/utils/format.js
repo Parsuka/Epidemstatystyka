@@ -1,14 +1,18 @@
 const numberFormatter = new Intl.NumberFormat('uk-UA');
+const percentFormatter = new Intl.NumberFormat('uk-UA', { style: 'percent', maximumFractionDigits: 1 });
 
 export function formatNumber(value) {
   return numberFormatter.format(Math.round(value));
 }
 
-export function formatChange(change) {
-  const sign = change > 0 ? '+' : '';
-  return `${sign}${change.toFixed(1)}%`;
+export function formatPercent(share) {
+  return percentFormatter.format(Number.isFinite(share) ? share : 0);
+}
+
+export function formatApiDate(apiDate) {
+  return new Date(apiDate).toLocaleDateString('uk-UA');
 }
 
 export function perHundredThousand(value, population) {
-  return (value / population) * 100000;
+  return population ? (value / population) * 100000 : 0;
 }

@@ -76,22 +76,9 @@
   font-variant-numeric: tabular-nums;
 }
 
-.kpi-card__change {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.kpi-card__change--up {
-  color: var(--danger);
-}
-
-.kpi-card__change--down {
-  color: var(--success);
-}
-
-.kpi-card__period {
+.kpi-card__caption {
+  font-size: 13px;
   color: var(--muted);
-  font-weight: 400;
 }
 
 .btn {
@@ -278,4 +265,111 @@
 
 .filtered-list__empty {
   color: var(--muted);
+}
+
+.filtered-list__items {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.table-scroll {
+  max-height: 480px;
+  overflow: auto;
+}
+
+.table--sticky thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 1;
+}
+
+.sort-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sort-btn--active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.sort-btn__arrow {
+  font-size: 11px;
+}
+
+.country-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.country-cell__flag {
+  width: 22px;
+  height: 15px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.request-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 0;
+  color: var(--muted);
+  text-align: center;
+}
+
+.request-state--error {
+  color: var(--danger);
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.trend {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.trend__period {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.trend__list {
+  margin: 0;
+}
+
+.trend__item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.trend__item dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }

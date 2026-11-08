@@ -33,3 +33,52 @@ export function getLatestUpdate(countries) {
   if (countries.length === 0) return null;
   return Math.max(...countries.map((item) => item.updated ?? 0));
 }
+
+export function buildCountrySections(country) {
+  const n = (value) => formatNumber(value);
+  return [
+    {
+      title: 'Загальна статистика',
+      items: [
+        { label: 'Усього випадків', value: n(country.cases) },
+        { label: 'Смерті', value: n(country.deaths) },
+        { label: 'Одужали', value: n(country.recovered) },
+        { label: 'Активні випадки', value: n(country.active) },
+        { label: 'У критичному стані', value: n(country.critical) },
+        { label: 'Летальність', value: formatPercent(country.deaths / country.cases) },
+      ],
+    },
+    {
+      title: 'За добу',
+      items: [
+        { label: 'Нові випадки', value: `+${n(country.todayCases)}` },
+        { label: 'Нові смерті', value: `+${n(country.todayDeaths)}` },
+        { label: 'Одужали', value: `+${n(country.todayRecovered)}` },
+      ],
+    },
+    {
+      title: 'На 1 млн населення',
+      items: [
+        { label: 'Випадків', value: n(country.casesPerOneMillion) },
+        { label: 'Смертей', value: n(country.deathsPerOneMillion) },
+        { label: 'Тестів', value: n(country.testsPerOneMillion) },
+        { label: 'Один випадок на', value: `${n(country.oneCasePerPeople)} осіб` },
+        { label: 'Одна смерть на', value: `${n(country.oneDeathPerPeople)} осіб` },
+      ],
+    },
+    {
+      title: 'Про країну',
+      items: [
+        { label: 'Населення', value: n(country.population) },
+        { label: 'Проведено тестів', value: n(country.tests) },
+        { label: 'Коди ISO', value: `${country.iso2} / ${country.iso3}` },
+        { label: 'Координати', value: formatCoords(country.lat, country.long) },
+      ],
+    },
+  ];
+}
+
+function formatCoords(lat, long) {
+  if (lat == null || long == null) return '—';
+  return `${lat.toFixed(2)}°, ${long.toFixed(2)}°`;
+}

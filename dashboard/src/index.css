@@ -12,6 +12,19 @@
   font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
   color: var(--text);
   background: var(--bg);
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg: #0f1420;
+  --surface: #1a2130;
+  --text: #e6e9f0;
+  --muted: #97a0b5;
+  --border: #2c3547;
+  --accent: #5b8dff;
+  --danger: #ff6b6b;
+  --success: #3ecf8e;
+  color-scheme: dark;
 }
 
 *,

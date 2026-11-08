@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import Widget from '../components/layout/Widget';
 import RequestState from '../components/ui/RequestState';
@@ -10,30 +9,19 @@ import Counter from '../components/widgets/Counter';
 import TrendSummary from '../components/widgets/TrendSummary';
 import Toggle from '../components/widgets/Toggle';
 import FilteredList from '../components/widgets/FilteredList';
-import { useDebounce } from '../hooks/useDebounce';
+import { useFilters } from '../hooks/useFilters';
 import { useFetch } from '../hooks/useFetch';
 import { useCountries } from '../hooks/useCountries';
 import { useSort } from '../hooks/useSort';
 import { getHistoricalUrl, mapHistorical } from '../api/diseaseApi';
 import { calcKpis, getContinents, getLatestUpdate, getTopCountries } from '../utils/stats';
 import { CONTINENT_LABELS } from '../constants/continents';
-import { DEBOUNCE_DELAY, DEFAULT_FILTERS, PERIOD_OPTIONS } from '../constants/filters';
+import { PERIOD_OPTIONS } from '../constants/filters';
 
 const DEFAULT_DAYS = 7;
-const FILTER_NAMES = ['search', 'continent', 'period', 'minCases'];
 
 function DashboardContainer() {
-  const { control, reset } = useForm({ defaultValues: DEFAULT_FILTERS, mode: 'onChange' });
-  const [search, continent, period, minCases] = useWatch({ control, name: FILTER_NAMES });
-  const filters = useMemo(
-    () => ({ search, continent, period, minCases }),
-    [search, continent, period, minCases],
-  );
-  const debouncedFilters = useDebounce(filters, DEBOUNCE_DELAY);
-  const isPending = filters !== debouncedFilters;
-  const canReset = FILTER_NAMES.some((name) => filters[name] !== DEFAULT_FILTERS[name]);
-  const resetFilters = () => reset(DEFAULT_FILTERS);
-
+  const { debouncedFilters, isPending } = useFilters();
   const countriesRequest = useCountries(debouncedFilters);
   const countries = countriesRequest.data;
   const allCountries = countriesRequest.allCountries;
@@ -67,12 +55,9 @@ function DashboardContainer() {
     <DashboardLayout title="Епідемстатистика" updatedAt={getLatestUpdate(allCountries)} isLoading={countriesRequest.loading}>
       <Widget title="Фільтри" subtitle="Пошук і вибірка країн" className="widget--wide">
         <FiltersPanel
-          control={control}
           continentOptions={continentOptions}
           periodOptions={PERIOD_OPTIONS}
           statusText={statusText}
-          onReset={resetFilters}
-          canReset={canReset}
         />
       </Widget>
 
@@ -86,7 +71,7 @@ function DashboardContainer() {
         </RequestState>
       </Widget>
 
-      <Widget title="Країни світу" subtitle="Клікніть заголовок колонки, щоб сортувати" className="widget--wide">
+      <Widget title="Країни світу" subtitle="Клік по заголовку — сортування, по рядку — деталі країни" className="widget--wide">
         <RequestState {...countriesState}>
           <CountriesTable rows={sortedItems} sortConfig={sortConfig} onSort={requestSort} continentLabels={CONTINENT_LABELS} />
         </RequestState>

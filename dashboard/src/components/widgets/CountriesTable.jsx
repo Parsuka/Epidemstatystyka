@@ -1,5 +1,7 @@
+import { Link, useNavigate } from 'react-router';
 import SortableHeader from '../ui/SortableHeader';
 import { formatNumber } from '../../utils/format';
+import { getCountryPath } from '../../utils/routes';
 
 const COLUMNS = [
   { key: 'country', label: 'Країна', isNumeric: false, defaultDirection: 'asc' },
@@ -12,6 +14,8 @@ const COLUMNS = [
 ];
 
 function CountriesTable({ rows, sortConfig, onSort, continentLabels }) {
+  const navigate = useNavigate();
+
   return (
     <div className="table-scroll">
       <table className="table table--sticky">
@@ -24,11 +28,17 @@ function CountriesTable({ rows, sortConfig, onSort, continentLabels }) {
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.id}>
+            <tr
+              key={row.id}
+              className="table__row--link"
+              onClick={() => navigate(getCountryPath(row.code))}
+            >
               <td>
                 <span className="country-cell">
                   {row.flag && <img className="country-cell__flag" src={row.flag} alt="" loading="lazy" />}
-                  {row.country}
+                  <Link to={getCountryPath(row.code)} onClick={(event) => event.stopPropagation()}>
+                    {row.country}
+                  </Link>
                 </span>
               </td>
               <td>{continentLabels[row.continent] ?? '—'}</td>

@@ -1,6 +1,10 @@
 const BASE_URL = 'https://disease.sh/v3/covid-19';
 
-export const COUNTRIES_URL = `${BASE_URL}/countries`;
+export function getCountriesUrl(period = 'today') {
+  if (period === 'yesterday') return `${BASE_URL}/countries?yesterday=true`;
+  if (period === 'twoDaysAgo') return `${BASE_URL}/countries?twoDaysAgo=true`;
+  return `${BASE_URL}/countries`;
+}
 
 export function getHistoricalUrl(days) {
   return `${BASE_URL}/historical/all?lastdays=${days + 1}`;

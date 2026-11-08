@@ -1,7 +1,7 @@
 import Button from './Button';
 
-function RequestState({ isLoading, error, isEmpty, onRetry, emptyText = 'Даних немає', children }) {
-  if (isLoading) {
+function RequestState({ loading, error, isEmpty, onRetry, emptyText = 'Даних немає', children }) {
+  if (loading) {
     return (
       <div className="request-state" role="status">
         <span className="spinner" aria-hidden="true" />

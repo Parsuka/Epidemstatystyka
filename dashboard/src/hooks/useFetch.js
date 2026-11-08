@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { fetchJson } from '../api/diseaseApi';
 
 const INITIAL_RESULT = { key: null, data: null, error: null };
+const identity = (data) => data;
 
-export function useFetch(url, transform) {
+export function useFetch(url, transform = identity) {
   const [reloadCount, setReloadCount] = useState(0);
   const [result, setResult] = useState(INITIAL_RESULT);
   const requestKey = `${url}#${reloadCount}`;
@@ -19,13 +20,13 @@ export function useFetch(url, transform) {
     return () => controller.abort();
   }, [url, requestKey, transform]);
 
-  const isLoading = result.key !== requestKey;
+  const loading = result.key !== requestKey;
   const reload = () => setReloadCount((count) => count + 1);
 
   return {
-    data: isLoading ? null : result.data,
-    error: isLoading ? null : result.error,
-    isLoading,
+    data: loading ? null : result.data,
+    loading,
+    error: loading ? null : result.error,
     reload,
   };
 }
